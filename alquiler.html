@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="banner">
+        <div class="logo-nombre">
+            <img src="logo.jpg" alt="" class="img">
+            <h1>AlquiPC</h1>
+        </div>
+        <nav class="menu">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#">Alquiler</a></li>
+                <li><a href="nosotros.html">Sobre nosotros</a></li>
+            </ul>
+        </nav>
+    </header>
+    <center>
+    <br/>
+        <h1>Bienvenido estimado cliente a ALQUIPC</h1><br/>
+        <div class="formulario"><br>
+            <form action="">
+                <label for="">Nombre del estimado cliente:</label> 
+                <input type="text" id="nombre" placeholder="juan pablo"> <br/><br/>
+
+                <label for="">Teléfono del estimado cliente:</label> 
+                <input type="number" id="telefono" placeholder="123456789"> <br/><br/> 
+
+                <label for="">Correo del estimado cliente:</label> 
+                <input type="text" id="correo" placeholder="jp@gmail.com"> <br/><br/> 
+
+                <label for="">Tipos de servicios ofrecidos:</label> 
+                <select id="tipoServicio" >
+                <option value="op0">--Seleccione servicio --</option>
+                <option value="op1">Dentro de la ciudad</option>
+                <option value="op2">Fuera de la ciudad</option>
+                <option value="op3">Dentro del establecimiento</option>
+                </select><br/><br/> 
+
+                <label for="">Número de equipos que desea alquilar:</label> 
+                <input type="number" id="numeroEquipos"> <br/><br/>
+
+                <label for="">Número de días que desea alquilar:</label> 
+                <input type="number" id="numeroDias"> <br/><br/>
+
+                <label for="">Número de días adicionales que desea alquilar:</label> 
+                <input type="number" id="diasAdicionales"> <br/><br/>
+
+                <button type="submit" onclick="formulario(event)">Ver total</button>
+            </form><br/>
+        </div><br/><br/>
+        <div>
+        <h1>Factura Alquipc</h1><br/>
+        <div class="formulario">
+            <div>
+                </br>
+                <label for="">Id del cliente:</label> 
+                <span id="idCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Nombre del cliente:</label> 
+                <span id="nomCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Telefono del cliente:</label> 
+                <span id="telCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Correo del cliente:</label> 
+                <span id="corCli"></span> <br/><br/>
+                <hr width="90%">
+            </div>
+            <div >
+                <label for="">Tipo de servicio seleccionada:</label> 
+                <span id="serCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Número de equipos:</label> 
+                <span id="equCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Número de días iniciales:</label> 
+                <span id="diaCli"></span> <br/><br/>
+            </div>
+             <div >
+                <label for="">Valor del alquiler:</label> 
+                <span id="valCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Número de días adicionales:</label> 
+                <span id="adiCli"></span> <br/><br/>
+            </div>
+             <div >
+                <label for="">Valor de días iniciales:</label> 
+                <span id="vadCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Descuento:</label> 
+                <span id="desCli"></span> <br/><br/>
+            </div>
+            <div >
+                <label for="">Total a pagar:</label> 
+                <span id="totCli"></span> <br/><br/>
+                
+                <hr width="90%">
+            </div>
+            <div >
+                <p>Factura generada por estudiante del SENA</p>
+            </div>
+            <div >
+                <p>Gracias por utilizar nuestros servicios</p>
+                <hr width="90%">
+            </div><br/>
+            <div>
+                <a href="index.html"><button>Volver</button></a>
+            </div></br> 
+
+        </div>
+    </center></br>
+
+    <script>
+    function formulario(event) {
+        event.preventDefault();
+
+        const lista = document.getElementById('tipoServicio');
+        let nombre = document.getElementById('nombre').value;
+        let telefono = document.getElementById('telefono').value;
+        let correo = document.getElementById('correo').value;
+        let servicio = lista.options[lista.selectedIndex].text;
+        let servicioValor = lista.value;
+        let numeroEquipos = document.getElementById('numeroEquipos').value;
+        let numeroDias = document.getElementById('numeroDias').value;
+        let diasAdicionales = document.getElementById('diasAdicionales').value;
+        let valorAlquiler = 35000;
+
+        if (nombre.trim() === "" || telefono.trim() === "" || correo.trim() === "" || servicioValor === "op0") {
+            alert("Error: faltan datos");
+            return;
+        }
+
+        if (numeroEquipos < 2) {
+            alert("Minimo 2 equipos");
+            return;
+        }
+
+        let subtotalInicial = numeroEquipos * numeroDias * valorAlquiler;
+        let subtotalAdicional = numeroEquipos * diasAdicionales * valorAlquiler;
+        let incremento = 0;
+        let descuentoTotal = 0;
+
+        if (servicio === "Fuera de la ciudad") {
+            incremento = subtotalInicial * 0.05;
+        }
+
+        if (servicio === "Dentro del establecimiento") {
+            descuentoTotal = subtotalInicial * 0.05;
+        }
+
+        if (diasAdicionales >= 3) {
+            let bloques = Math.floor(diasAdicionales / 3);
+            descuentoTotal = descuentoTotal + (subtotalAdicional * (bloques * 0.02));
+        }
+
+        let totalFinal = (subtotalInicial + subtotalAdicional + incremento) - descuentoTotal;
+        let idGenerado = Math.floor(Math.random() * 500);
+
+        document.getElementById('idCli').textContent = "ID-" + idGenerado;
+        document.getElementById('nomCli').textContent = nombre;
+        document.getElementById('telCli').textContent = telefono;
+        document.getElementById('corCli').textContent = correo;
+        document.getElementById('serCli').textContent = servicio;
+        document.getElementById('equCli').textContent = numeroEquipos;
+        document.getElementById('diaCli').textContent = numeroDias;
+        document.getElementById('valCli').textContent = subtotalInicial;
+        document.getElementById('adiCli').textContent = diasAdicionales;
+        document.getElementById('vadCli').textContent = subtotalAdicional;
+        document.getElementById('desCli').textContent = descuentoTotal;
+        document.getElementById('totCli').textContent = totalFinal;
+    }
+    </script>
+</body>
+</html>
